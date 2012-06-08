@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+  <head>
+    <meta charset="UTF-8">
+    <title>Spoon Ownership Simulator</title>
+  </head>
+  <body>
+    <h1>Spoon Ownership Simulator</h1>
+    <noscript>
+      <p>
+        To experience the next-gen, HTML&nbsp;5 awesomeness of <em>Spoon
+        Ownership Simulator</em>, you need to use a browser sporting the
+        awesome power of JavaScript. I know, I suck.
+      </p>
+    </noscript>
+    <div id="game"></div>
+    <small>
+      Made in <a href="https://twitter.com/search/%23JamOClock">one hour</a>,
+      and also one more hour,
+      by <a rel="author" href="http://www.danielcassidy.me.uk/">Daniel
+      Cassidy</a>. Additional dialogue by
+      <a href="https://twitter.com/ProNihilist">John Cullen</a>.
+    </small>
+    <script>
+      var spoons = 0;
+      var spoonState = "new";
+      
+      var spoonStates = {
+        "new": "shiny new",
+        "clean": "sparkling clean",
+        "dirty": "dirty"
+      };
+      
+      var bowls = [
+        ["bowl", "a bowl of"],
+        ["big-bowl", "a big heaping bowl of"],
+        ["vat", "a vat of"],
+        ["shoe", "a shoe containing"],
+        ["tub", "a tub of"] ];
+      
+      var foods = [
+        ["egg", "scrambled egg"],
+        ["misc", "miscellaneous foodstuff"],
+        ["corn-flakes", "corn flakes"],
+        ["jam", "jam"],
+        ["chilli", "chilli"],
+        ["jelly", "jelly"],
+        ["yoghurt", "yoghurt"],
+        ["pasta", "pasta"],
+        ["porridge", "porridge"],
+        ["custard", "custard"] ];
+      
+      var tooManySpoons = [
+        ["bankrupt", "You are bankrupted by the expense of purchasing so many spoons"],
+        ["crushed", "You are physically crushed under the intense weight of your extreme spoon-ownership"] ];
+      
+      var negativeSpoons = [
+        ["paradox", "You have negative spoons. The universe is unable to resolve the paradox and collapses in upon itself. Your reckless attitude towards spoon-ownership has doomed all life on Earth and induced the end of all that is."],
+        ["pastries", "You have negative spoons. As a result you are morally ambiguous and those around you are unable to classify you as friend or foe. It impossible for you to buy pastries and you die of a heart attack induced by insufficient strudel consumption." ] ];
+      
+      var spoonAlternatives = [
+          ["fork", "fork"],
+          ["comb", "comb"] ];
+      
+      var youOwnP = document.createElement("p");
+      var text = document.createTextNode("You own:");
+      youOwnP.appendChild(text);
+      
+      var possessionsUl = document.createElement("ul");
+      possessionsUl.className = "possessions";
+      
+      var spoonLi = document.createElement("li");
+      spoonLi.className = "spoon";
+      possessionsUl.appendChild(spoonLi);
+      
+      var foodLi = document.createElement("li");
+      foodLi.className = "food";
+      possessionsUl.appendChild(foodLi);
+      
+      var buttonsUl = document.createElement("ul");
+      buttonsUl.className = "buttons";
+      
+      var li = document.createElement("li");
+      var buyButton = document.createElement("button");
+      buyButton.className = "buy";
+      text = document.createTextNode("Buy Spoon");
+      buyButton.appendChild(text);
+      li.appendChild(buyButton);
+      buttonsUl.appendChild(li);
+      
+      var li = document.createElement("li");
+      var sellButton = document.createElement("button");
+      sellButton.className = "sell";
+      text = document.createTextNode("Sell Spoon");
+      sellButton.appendChild(text);
+      li.appendChild(sellButton);
+      buttonsUl.appendChild(li);
+      
+      var li = document.createElement("li");
+      var washButton = document.createElement("button");
+      washButton.className = "wash";
+      text = document.createTextNode("Wash Spoon");
+      washButton.appendChild(text);
+      li.appendChild(washButton);
+      buttonsUl.appendChild(li);
+      
+      var li = document.createElement("li");
+      var eatButton = document.createElement("button");
+      eatButton.className = "eat";
+      text = document.createTextNode("Eat Food");
+      eatButton.appendChild(text);
+      li.appendChild(eatButton);
+      buttonsUl.appendChild(li);
+      
+      
+      function empty(element) {
+        while (element && element.firstChild) {
+          element.removeChild(element.firstChild);
+        }
+      }
+      
+      function gameOver(className, message) {
+        // TODO
+      }
+      
+      function updateSpoons() {
+        empty(spoonLi);
+        
+        if (spoons < 0) {
+          gameOver.apply(this, negativeSpoons[
+              Math.floor(Math.random() * negativeSpoons.length)]);
+        } else if (spoons == 0) {
+          spoonLi.className="spoon 0-spoons";
+          text = document.createTextNode("no spoons");
+          spoonLi.appendChild(text);
+        } else if (spoons == 1) {
+          spoonLi.className="spoon 1-spoon " + spoonState;
+          text = document.createTextNode("one " +
+              spoonStates[spoonState] + " spoon");
+          spoonLi.appendChild(text);
+        } else {
+          gameOver.apply(this,
+              tooManySpoons[Math.floor(Math.random() * tooManySpoons.length)]);
+        }
+      }
+      
+      function newFood() {
+        empty(food);
+        
+        var bowl = bowls[Math.floor(Math.random() * bowls.length)];
+        var food = foods[Math.floor(Math.random() * foods.length)];
+        
+        foodLi.className = "food " + bowl[0] + " " + food[0];
+        text = document.createTextNode(bowl[1] + " " + food[1]);
+        foodLi.appendChild(text);
+      }
+      
+      updateSpoons();
+      newFood();
+      
+      var gameDiv = document.getElementById("game");
+      gameDiv.appendChild(youOwnP);
+      gameDiv.appendChild(possessionsUl);
+      gameDiv.appendChild(buttonsUl);
+    </script>
+  </body>
+</html>
