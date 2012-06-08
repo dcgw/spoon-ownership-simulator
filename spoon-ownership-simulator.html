@@ -19,7 +19,8 @@
       and also one more hour,
       by <a rel="author" href="http://www.danielcassidy.me.uk/">Daniel
       Cassidy</a>. Additional dialogue by
-      <a href="https://twitter.com/ProNihilist">John Cullen</a>.
+      <a href="https://twitter.com/ProNihilist">John Cullen</a> and
+      <a href="https://twitter.com/dedhedzed">Zayne Black</a>.
     </small>
     <script>
       var spoons = 0;
@@ -60,7 +61,14 @@
       
       var spoonAlternatives = [
           ["fork", "fork"],
-          ["comb", "comb"] ];
+          ["comb", "comb"],
+          ["playing-card", "playing card"] ];
+      
+      var diseases = [
+          ["cancer", "cancer"]];
+      
+      var lastActionP = document.createElement("p");
+      lastActionP.className="last-action";
       
       var youOwnP = document.createElement("p");
       var text = document.createTextNode("You own:");
@@ -119,6 +127,17 @@
         }
       }
       
+      function action(t) {
+        if (t) {
+          lastActionP.style.display = null;
+          empty(lastActionP);
+          text = document.createTextNode(t);
+          lastActionP.appendChild(text);
+        } else {
+          lastActionP.style.display = "none";
+        }
+      }
+      
       function gameOver(className, message) {
         // TODO
       }
@@ -145,7 +164,7 @@
       }
       
       function newFood() {
-        empty(food);
+        empty(foodLi);
         
         var bowl = bowls[Math.floor(Math.random() * bowls.length)];
         var food = foods[Math.floor(Math.random() * foods.length)];
@@ -155,13 +174,62 @@
         foodLi.appendChild(text);
       }
       
+      action();
       updateSpoons();
       newFood();
       
       var gameDiv = document.getElementById("game");
+      gameDiv.appendChild(lastActionP);
       gameDiv.appendChild(youOwnP);
       gameDiv.appendChild(possessionsUl);
       gameDiv.appendChild(buttonsUl);
+      
+      buyButton.onclick = function() {
+        ++spoons;
+        updateSpoons();
+      };
+      
+      sellButton.onclick = function() {
+        --spoons;
+        updateSpoons();
+      };
+      
+      washButton.onclick = function() {
+        if (spoons > 0) {
+          spoonState = "clean";
+          updateSpoons();
+        } else {
+          // TODO
+        }
+      };
+      
+      eatButton.onclick = function() {
+        if (spoons > 0) {
+          var actionText = "You eat the " + foodLi.textContent +
+              " with your " +spoonLi.textContent;
+          if (spoonState == "dirty") {
+            var disease = diseases[Math.floor(
+                Math.random() * diseases.length)];
+            gameOver("dirty " + disease[0],
+                actionText + " You contract " + disease[1] + " from the " +
+                    "dirty spoon and die.");
+          } else {
+            action(actionText);
+            spoonState = "dirty";
+            updateSpoons();
+            newFood();
+          }
+        } else {
+          var spoonAlternative = spoonAlternatives[
+              Math.floor(Math.random() * spoonAlternatives.length)];
+          var disease = diseases[Math.floor(Math.random() * diseases.length)];
+          gameOver("no-spoon " + spoonAlternative[0] + " " + disease[0],
+              "You have no spoons so you eat the " + foodLi.textContent +
+                  "with a " + spoonAlternative[1] + ". You contract " +
+                  disease[1] + " from the " + spoonAlternative[1] +
+                  " and die.");
+        }
+      };
     </script>
   </body>
 </html>
