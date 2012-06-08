@@ -3,6 +3,56 @@
   <head>
     <meta charset="UTF-8">
     <title>Spoon Ownership Simulator</title>
+    <link href='http://fonts.googleapis.com/css?family=Ropa+Sans|Bangers' rel='stylesheet' type='text/css'>
+    <style>
+      * {
+        font-family: inherit;
+        font-size: 1em;
+        line-height: 1em;
+      }
+      h1, h2, p, ul, li {
+        margin: 0;
+        border: 0;
+        padding: 0;
+      }
+      body {
+        margin: 32px 96px;
+        font: 24px/32px "Ropa Sans", sans-serif;
+      }
+      h1 {
+        margin: 64px 0 32px 0;
+        padding: 0 8px;
+        font: 56px/64px Bangers, sans-serif;
+        letter-spacing: 2px;
+      }
+      p, ul {
+        margin: 16px 0;
+      }
+      .possessions li,
+      .buttons li {
+        display: inline;
+        display: inline-block;
+      }
+      .possessions li {
+        margin: 0 16px 0 0;
+        padding: 8px;
+        border: 1px solid black;
+        width: 176px;
+        height: 176px;
+        vertical-align: bottom;
+      }
+      .buttons li {
+        margin: 0 8px 0 0;
+        width: 96px;
+      }
+      button {
+        width: 92px;
+      }
+      small {
+        font-size: 16px;
+        line-height: 16px;
+      }
+    </style>
   </head>
   <body>
     <h1>Spoon Ownership Simulator</h1>
@@ -16,7 +66,7 @@
     <div id="game"></div>
     <small>
       Made in <a href="https://twitter.com/search/%23JamOClock">one hour</a>,
-      and also one more hour,
+      and then also half of one more hour,
       by <a rel="author" href="http://www.danielcassidy.me.uk/">Daniel
       Cassidy</a>. Additional dialogue by
       <a href="https://twitter.com/ProNihilist">John Cullen</a> and
