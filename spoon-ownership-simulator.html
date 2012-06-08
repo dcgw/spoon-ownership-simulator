@@ -274,6 +274,7 @@
       
       buyButton.onclick = function() {
         ++spoons;
+        spoonState = "new";
         updateSpoons();
       };
       
@@ -294,7 +295,7 @@
       eatButton.onclick = function() {
         if (spoons > 0) {
           var actionText = "You eat " + foodLi.textContent +
-              " with your " +spoonLi.textContent;
+              " with your " +spoonLi.textContent + ".";
           if (spoonState == "dirty") {
             var disease = diseases[Math.floor(
                 Math.random() * diseases.length)];
