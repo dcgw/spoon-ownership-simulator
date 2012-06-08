@@ -53,10 +53,10 @@
       
       var tooManySpoons = [
         ["bankrupt", "You are bankrupted by the expense of purchasing so many spoons"],
-        ["crushed", "You are physically crushed under the intense weight of your extreme spoon-ownership"] ];
+        ["crushed", "You are physically crushed under the intense weight of your extreme levels of spoon-ownership"] ];
       
       var negativeSpoons = [
-        ["paradox", "You have negative spoons. The universe is unable to resolve the paradox and collapses in upon itself. Your reckless attitude towards spoon-ownership has doomed all life on Earth and induced the end of all that is."],
+        ["paradox", "You have negative spoons. The universe is unable to resolve the paradox and collapses in upon itself. Your reckless attitude towards spoon-ownership has doomed all life on Earth and induced the end of all that is. Way to go."],
         ["pastries", "You have negative spoons. As a result you are morally ambiguous and those around you are unable to classify you as friend or foe. It impossible for you to buy pastries and you die of a heart attack induced by insufficient strudel consumption." ] ];
       
       var spoonAlternatives = [
@@ -65,7 +65,13 @@
           ["playing-card", "playing card"] ];
       
       var diseases = [
-          ["cancer", "cancer"]];
+          ["cancer", "cancer"],
+          ["botulism", "botulism"],
+          ["hypoglycemia", "hypoglycemia"],
+          ["fever", "Bolivian hemorrhagic fever"] ];
+      
+      var playDiv = document.createElement("div");
+      playDiv.className = "play";
       
       var lastActionP = document.createElement("p");
       lastActionP.className="last-action";
@@ -120,6 +126,31 @@
       li.appendChild(eatButton);
       buttonsUl.appendChild(li);
       
+      playDiv.appendChild(lastActionP);
+      playDiv.appendChild(youOwnP);
+      playDiv.appendChild(possessionsUl);
+      playDiv.appendChild(buttonsUl);
+      
+      
+      var gameOverDiv = document.createElement("div");
+      gameOverDiv.className = "game-over";
+      
+      var h2 = document.createElement("h2");
+      text = document.createTextNode("Game Over");
+      h2.appendChild(text);
+      gameOverDiv.appendChild(h2);
+      
+      var gameOverP = document.createElement("p");
+      gameOverDiv.appendChild(gameOverP);
+      
+      var button = document.createElement("button");
+      text = document.createTextNode("Play Again");
+      button.appendChild(text);
+      button.onclick = function () {
+        window.location.reload(true);
+      };
+      gameOverDiv.appendChild(button);
+      
       
       function empty(element) {
         while (element && element.firstChild) {
@@ -139,11 +170,21 @@
       }
       
       function gameOver(className, message) {
-        // TODO
+        gameDiv.removeChild(playDiv);
+        
+        empty(gameOverP);
+        text = document.createTextNode(message);
+        gameOverP.appendChild(text);
+        
+        gameOverDiv.className = "game-over " + className;
+        
+        gameDiv.appendChild(gameOverDiv);
       }
       
       function updateSpoons() {
         empty(spoonLi);
+        
+        washButton.disabled = spoons < 1;
         
         if (spoons < 0) {
           gameOver.apply(this, negativeSpoons[
@@ -179,10 +220,7 @@
       newFood();
       
       var gameDiv = document.getElementById("game");
-      gameDiv.appendChild(lastActionP);
-      gameDiv.appendChild(youOwnP);
-      gameDiv.appendChild(possessionsUl);
-      gameDiv.appendChild(buttonsUl);
+      gameDiv.appendChild(playDiv);
       
       buyButton.onclick = function() {
         ++spoons;
@@ -205,7 +243,7 @@
       
       eatButton.onclick = function() {
         if (spoons > 0) {
-          var actionText = "You eat the " + foodLi.textContent +
+          var actionText = "You eat " + foodLi.textContent +
               " with your " +spoonLi.textContent;
           if (spoonState == "dirty") {
             var disease = diseases[Math.floor(
@@ -224,8 +262,8 @@
               Math.floor(Math.random() * spoonAlternatives.length)];
           var disease = diseases[Math.floor(Math.random() * diseases.length)];
           gameOver("no-spoon " + spoonAlternative[0] + " " + disease[0],
-              "You have no spoons so you eat the " + foodLi.textContent +
-                  "with a " + spoonAlternative[1] + ". You contract " +
+              "You have no spoons so you eat " + foodLi.textContent +
+                  " with a " + spoonAlternative[1] + ". You contract " +
                   disease[1] + " from the " + spoonAlternative[1] +
                   " and die.");
         }
